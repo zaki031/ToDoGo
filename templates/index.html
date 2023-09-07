@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ToDoGo</title>
+</head>
+<<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+  body{
+     text-align: center;
+
+    font-family: 'Roboto', sans-serif;
+  }
+  .todo-container{
+    position:relative;
+
+    padding:40px;
+    background-color: #f0eded;
+    margin: 50px;
+    border-radius: 8px;
+  }
+  .todo-container{
+    display:flex;
+    justify-content:space-between;
+    
+  }
+
+  .delete{
+    color: white;
+    font-weight: bold;
+  border-radius:8px;
+    background-color:red;
+    padding-right:15px; padding-left:15px;
+    padding-top:10px; padding-bottom:10px;
+  border:none;
+  }
+
+  .id{
+
+    position: absolute;
+    bottom:0;
+    right:30px;
+    color:grey;
+  }
+
+  .todo-input{
+
+    padding:10px;
+    border-radius:8px;
+    border : 1px solid black;
+    width:300px;
+    
+    height:40px;
+  }
+  .submit-input{
+    background-color: blue;
+    padding:10px;
+    padding-right:30px; padding-left:30px;
+    font-weight: bold;
+    border-radius:8px;
+    border:0;
+    color:white;
+  }
+  .inputs{
+    display:flex;
+    justify-content:center;
+    gap: 20px;
+  }
+  .check-container{
+
+    display:flex;
+    gap:40px;
+  }
+  #check{
+    margin-top:15px;
+  }
+</style>
+<body>
+    <h1>Todo List</h1>
+
+    <form action="http://localhost:8080/todos"   method="POST">
+      <div class="inputs">
+      <input type="text" class="todo-input" name="todo" placeholder="Enter a new task" value="">
+      <input type="submit" class="submit-input" name="submit" value="submit">
+      </div>
+    </form>
+    <ul>
+        {{range .}}
+        <div  class="todo-container">
+          <div class="check-container">
+            <a href="/todos" id="check"><input id="remember" name="remember" type="checkbox" onclick="
+            fetch('http://localhost:8080/todos/{{.ID}}', { method:'GET'})"
+          {{if .IsDone}}
+              checked
+          {{else}}  
+          {{end}}/></a>
+          {{if .IsDone}}        
+              <s><p class="todo">{{.Todo}}</p></s>
+          {{else}}
+              <p class="todo">{{.Todo}}</p>
+          {{end}}
+          </div>
+          <a href="/todos"><button onclick="fetch('http://localhost:8080/todos/{{.ID}}', { method: 'DELETE'})" class="delete">Delete</button></a>
+          <p class="id">ID:{{.ID}}</p>
+        </div>
+        {{end}}
+    </ul>
+</body>
+</html>
